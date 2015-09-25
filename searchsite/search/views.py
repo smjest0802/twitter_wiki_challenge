@@ -21,7 +21,13 @@ def IndexView(request):
 
             print search_text
             #return HttpResponseRedirect('/search/index.html', {'search_text': search_text})
-            return render(request, 'search/index.html', {'form':form, 'search_text': search_text})
+
+            #from api.wiki_search import queryWiki
+            from .api.wiki_search import queryWiki
+
+            query_results = queryWiki()
+
+            return render(request, 'search/index.html', {'form':form, 'search_text': search_text, 'query_results': query_results})
     # if a GET (or any other method) we'll create a blank form
     else:
         print "Here 1"
