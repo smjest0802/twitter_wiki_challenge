@@ -4,6 +4,8 @@ from .forms import SearchForm
 
 from django.http import HttpResponseRedirect
 
+from .api.wiki_search import QueryAPIs 
+
 def IndexView(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -15,17 +17,15 @@ def IndexView(request):
             # ...
             # redirect to a new URL:
 
-            search_text = form.cleaned_data['search_text']
+            searchText = form.cleaned_data['search_text']
 
-            print search_text
             #return HttpResponseRedirect('/search/index.html', {'search_text': search_text})
 
-            #from api.wiki_search import queryWiki
-            from .api.wiki_search import queryWiki
+            queryAPIs = QueryAPIs()
 
-            query_results = queryWiki(search_text)
+            queryAPIs.queryWiki(searchText)
 
-            return render(request, 'search/index.html', {'form':form, 'search_text': search_text, 'query_results': query_results})
+            return render(request, 'search/index.html', {'form':form, 'search_text': searchText, 'query_results': queryAPIs})
     # if a GET (or any other method) we'll create a blank form
     else:
         form = SearchForm()

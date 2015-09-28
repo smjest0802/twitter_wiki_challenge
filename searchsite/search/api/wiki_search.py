@@ -1,31 +1,39 @@
 import requests, json
 
-class QueryResult():
+class QueryAPIs():
 
-    def __init__(self, result):
-        self.ns = result.get('ns')
-        self.title = result.get('title')
-        self.snippet = result.get('snippet')
-        self.size = result.get('size')
-        self.wordcount = result.get('wordcount')
-        self.timestamp = result.get('timestamp')
+    wikiError = False
+    wikiResults = []
 
+    twitterError = False
+    twitterResults = []
 
+    # URL here to allow for Unit Testing
+    # Since using the requests module, would use mock-requests for testing this instead
+    wikiURL = 'https://en.wikipedia.org/w/api.php'
 
-def queryWiki(searchTerm):
+    class WikiResult():
+        def __init__(self, result):
+                self.title = result.get('title', "")
+                self.snippet = result.get('snippet', "")
 
-    # sample url: https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=Albert%20Einstein&utf8=
-    r = requests.get('https://en.wikipedia.org/w/api.php', params = {'action': 'query',
+    def queryWiki(self, searchTerm):
+        # For each new query empty out the list
+        self.wikiResults = []
+        wikiError = False
+
+        try:
+            r = requests.get(self.wikiURL, params = {'action': 'query',
                                                             'list': 'search',
                                                             'srsearch': searchTerm,  
                                                             'format': 'json',
                                                            })
+            wikiJson = json.loads(r.text)
 
-    wikiJson = json.loads(r.text)
+            for result in wikiJson.get('query', {}).get('search', {}):
+                wikiResult = self.WikiResult(result)
+                self.wikiResults.append(wikiResult)
 
-    wikiResults = []
-
-    for result in wikiJson.get('query', {}).get('search', {}):
-        wikiResults.append(QueryResult(result))
-
-    return wikiResults
+        except:
+            self.wikiError = True
+           
