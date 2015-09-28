@@ -1,9 +1,49 @@
-<form action="/search/" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
-</form>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wiki and Twitter Search</title>
 
-<h1>{{ search_text }}</h1>
-<h1>{{ query_results.field1 }}</h1>
-<h1>{{ query_results.field2 }}</h1>
+        <!-- Inlude Style Sheets -->
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'search/index.css' %}" />
+    </head>
+    <body>
+        <!-- Search box form -->
+        <form action="/search/" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Submit" />
+        </form>
+
+        <!-- Wiki Search results. Only display if there are results. -->
+        <div class="wiki">
+            {% if query_results %}
+            <h3>Wiki Search results</h3>
+
+                {% autoescape off %}
+                {% for query_result in query_results %}
+                    <h3 class="title">{{ query_result.title }}</h3>
+
+                    <p class="snippet">{{ query_result.snippet }}</p>
+                {% endfor %}
+                {% endautoescape %}
+            {% endif %}
+        </div>
+
+        <!-- Twitter Search results. Only display if there are results. -->
+        <!-- Note: Currently using Wiki results as a place holder -->
+        <div class="twitter">
+            {% if query_results %}
+            <h3>Twitter Search results</h3>
+
+                {% autoescape off %}
+                {% for query_result in query_results %}
+                    <h3 class="title">{{ query_result.title }}</h3>
+
+                    <p class="snippet">{{ query_result.snippet }}</p>
+                {% endfor %}
+                {% endautoescape %}
+            {% endif %}
+        </div>
+    </body>
+</html>

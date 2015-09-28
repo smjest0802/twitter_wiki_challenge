@@ -1,0 +1,27 @@
+h3.title {
+    color: blue;
+    margin: 0px;
+}
+
+p.snippet {
+    color: black;
+    margin: 4px;
+    margin-bottom: 16px;
+    margin-left: 6px;
+}
+
+span.searchmatch {
+    font-weight: bold;
+}
+
+div.wiki {
+    width: 500px;
+    float: left;
+}
+
+div.twitter {
+    width: 500px;
+    float: left;
+    margin: 20px;
+    margin-top: 0px;
+}
