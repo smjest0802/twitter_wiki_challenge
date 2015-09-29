@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
     <head>
         <title>Wiki and Twitter Search</title>
@@ -15,6 +16,7 @@
             <input type="submit" value="Submit" />
         </form>
 
+        {% if not landing %} <!-- Only load this content after a search is done-->
         <!-- Wiki Search results. Only display if there are results. -->
         <div class="wiki">
             <h3>Wiki Search results</h3>
@@ -27,7 +29,7 @@
                     {% autoescape off %}
                     {% for query_result in query_results.wikiResults %}
                         <h3 class="title">{{ query_result.title }}</h3>
-                        <p class="snippet">{{ query_result.snippet }}</p>
+                        <p class="text">{{ query_result.snippet }}</p>
                     {% endfor %}
                     {% endautoescape %}
 
@@ -40,19 +42,18 @@
         </div>
 
         <!-- Twitter Search results. Only display if there are results. -->
-        <!-- Note: Currently using Wiki results as a place holder -->
         <div class="twitter">
             <h3>Twitter Search results</h3>
-            {% if query_results.TwitterError %} 
+            {% if query_results.twitterError %} 
                 <p>Error accessing Twitter API.</p> 
 
             {% else %}
-                {% if query_results.wikiResults %}
+                {% if query_results.twitterResults %}
 
                     {% autoescape off %}
-                    {% for query_result in query_results.wikiResults %}
-                        <h3 class="title">{{ query_result.title }}</h3>
-                        <p class="snippet">{{ query_result.snippet }}</p>
+                    {% for query_result in query_results.twitterResults %}
+                        <h3 class="name">{{ query_result.displayName }}: <span>@{{ query_result.screenName }}</span></h3>
+                        <p class="text">{{ query_result.text }}</p>
                     {% endfor %}
                     {% endautoescape %}
 
@@ -60,8 +61,8 @@
                     <p>No results found for search topic.</p>
 
                 {% endif %}
-
             {% endif %}
         </div>
+        {% endif %}
     </body>
 </html>

@@ -1,3 +1,12 @@
+"""
+.. module:: search/forms.py
+   :platform: Unix
+   :synopsis: Specification of the forms for the search application
+
+.. moduleauthor:: Shawn Meginley <shawn.meginley@gmail.com>
+
+
+"""
 from django import forms
 
 class SearchForm(forms.Form):
